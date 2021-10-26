@@ -78,11 +78,9 @@ const addPhotos = (photosLits) => {
   return photos;
 };
 //функци выбора рандомного аватара
-const idPhoto = () => {
-  getRandom(ID.min, ID.max);
-};
+const idPhoto = getRandom(ID.min, ID.max);
 const createAvatarId =() => {
-  const avatarId = idPhoto();
+  const avatarId = idPhoto;
   if (avatarId < 10) {
     return String(avatarId).padStart(2,'0');
   }else{
