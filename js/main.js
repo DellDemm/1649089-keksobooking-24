@@ -78,20 +78,21 @@ const addPhotos = (photosLits) => {
   return photos;
 };
 //функци выбора рандомного аватара
-const idPhoto = getRandom(ID.min, ID.max);
-const createAvatarId =() => {
-  const avatarId = idPhoto;
-  if (avatarId < 10) {
-    return String(avatarId).padStart(2,'0');
-  }else{
-    return avatarId;
-  }
-};
+
 
 // функция создания объявления
 function createOffer() {
   const LAT = getRandomIntFromToWithComma(LOCATION.lat.min, LOCATION.lat.max, 5);
   const LNG = getRandomIntFromToWithComma(LOCATION.lng.min, LOCATION.lng.max, 5);
+  const idPhoto = getRandom(ID.min, ID.max);
+  const createAvatarId =() => {
+    const avatarId = idPhoto;
+    if (avatarId < 10) {
+      return String(avatarId).padStart(2,'0');
+    }else{
+      return avatarId;
+    }
+  };
   return {
     author: {
       avatar: `img/avatars/user${createAvatarId()}.png`,
