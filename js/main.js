@@ -78,10 +78,10 @@ const addPhotos = (photosLits) => {
 };
 
 // функция создания объявления
-const createOffer = () => ({
-  const LAT = getRandomIntFromToWithComma(LOCATION.lat.min, LOCATION.lat.max, 5),
-  const LNG = getRandomIntFromToWithComma(LOCATION.lng.min, LOCATION.lng.max, 5),
-  return: {
+const createOffer = () => {
+  const LAT = getRandomIntFromToWithComma(LOCATION.lat.min, LOCATION.lat.max, 5);
+  const LNG = getRandomIntFromToWithComma(LOCATION.lng.min, LOCATION.lng.max, 5);
+  return {
     author: {
       avatar:`img/avatars/user${getRandom(1,10)}.png`,
     },
@@ -102,7 +102,8 @@ const createOffer = () => ({
       lat: LAT,
       lng: LNG,
     },
-  },
-});
+  };
+};
+
 const adoffer = Array.from({ length: 10 }, createOffer);
 throw(adoffer);
