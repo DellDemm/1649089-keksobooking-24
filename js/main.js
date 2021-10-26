@@ -13,13 +13,14 @@ const getRandomIntFromToWithComma = (from, to, countSignsAfterComma) => {
   return +(Math.random() * (to - from)).toFixed(countSignsAfterComma) + from;
 };
 // Добавляю массивы с данными
+const ID ={min:1, max:10};
 const TITLES = [
   'Девичье гнездышко',
   'Световая симфония',
   'Карнавал текстур и красок',
   'Продуманная рациональность',
   'Приют всех муз',
-  'Яркое отражение индивидуальности',];
+  'Яркое отражение индивидуальности'];
 const PRICE = {min:1000, max:10000};
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const ROOMS ={min:1, max:5};
@@ -76,26 +77,38 @@ const addPhotos = (photosLits) => {
   }
   return photos;
 };
+//функци выбора рандомного аватара
+const idPhoto = () => {
+  getRandom(ID.min, ID.max);
+};
+const createAvatarId =() => {
+  const avatarId = idPhoto();
+  if (avatarId < 10) {
+    return String(avatarId).padStart(2,'0');
+  }else{
+    return avatarId;
+  }
+};
 
 // функция создания объявления
-const createOffer = () => {
+function createOffer() {
   const LAT = getRandomIntFromToWithComma(LOCATION.lat.min, LOCATION.lat.max, 5);
   const LNG = getRandomIntFromToWithComma(LOCATION.lng.min, LOCATION.lng.max, 5);
   return {
     author: {
-      avatar:`img/avatars/user${getRandom(1,10)}.png`,
+      avatar: `img/avatars/user${createAvatarId()}.png`,
     },
     offer: {
-      title: TITLES[getRandom(0,TITLES.length - 1)],
+      title: TITLES[getRandom(0, TITLES.length - 1)],
       address: `${LAT},${LNG}`,
       price: getRandom(PRICE.min, PRICE.max),
-      type: TYPES[getRandom(0,TYPES.length - 1)],
+      type: TYPES[getRandom(0, TYPES.length - 1)],
       rooms: getRandom(ROOMS.min, ROOMS.max),
       quests: getRandom(GUESTS.min, GUESTS.max),
       checkin: TIMES[getRandom(0, TIMES.length - 1)],
       checkout: TIMES[getRandom(0, TIMES.length - 1)],
       features: addFeatures(FEATURES),
-      description: DESCRIPTIONS[getRandom(0,DESCRIPTIONS.length-1)],
+      description: DESCRIPTIONS[getRandom(0, DESCRIPTIONS.length - 1)],
       photos: addPhotos(PHOTOS),
     },
     location: {
@@ -103,7 +116,7 @@ const createOffer = () => {
       lng: LNG,
     },
   };
-};
+}
 
 const adoffer = Array.from({ length: 10 }, createOffer);
 throw(adoffer);
