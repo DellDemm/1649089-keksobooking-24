@@ -69,7 +69,7 @@ const addPhotos = (photosLits) => {
 
 
 // функция создания объявления
-function createOffer() {
+const createOffer=()=> {
   const LAT = getRandomIntFromToWithComma(LOCATION.lat.min, LOCATION.lat.max, 5);
   const LNG = getRandomIntFromToWithComma(LOCATION.lng.min, LOCATION.lng.max, 5);
   const idPhoto = getRandom(ID.min, ID.max);
@@ -103,7 +103,7 @@ function createOffer() {
       lng: LNG,
     },
   };
-}
+};
 
 const adoffer = Array.from({ length: 10 }, createOffer);
 export{ID, TITLES, PRICE, TYPES, ROOMS, GUESTS, TIMES, FEATURES, DESCRIPTIONS, PHOTOS, LOCATION, addFeatures, addPhotos, createOffer, adoffer};
