@@ -1,6 +1,6 @@
 import { createOffer} from './data.js';
-
-const mapCanvas = document.querySelector('#map-canavas');
+createOffer();
+const mapCanvas = document.querySelector('#map-canvas');
 const addCardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const addFragment = document.createDocumentFragment();
 const TYPE = {
@@ -11,7 +11,7 @@ const TYPE = {
   hotel: 'Отель',
 };
 const simularOffer = createOffer();
-simularOffer.forEach((item) => {
+[simularOffer].forEach((item) => {
   const addElement = addCardTemplate.cloneNode(true);
 
   item.author.avatar
@@ -38,6 +38,7 @@ simularOffer.forEach((item) => {
   item.offer.description
     ? addElement.querySelector('.popup__description').textContent = item.offer.description
     : addElement.querySelector('.popup__description').classList.add('visually-hidden');
+
   const popupFeatures = addElement.querySelector('.popup__features');
   const popupFeatureList = popupFeatures.querySelectorAll('.popup__feature');
 
@@ -57,8 +58,7 @@ simularOffer.forEach((item) => {
       if (modifiers !== modifier) {
         popupFeature.remove();
       }
-    });
-  }
+    });}
   const popupPhotos = addElement.querySelector('.popup__photos');
   const popupPhoto = popupPhotos.querySelector('.popup__photo');
 
