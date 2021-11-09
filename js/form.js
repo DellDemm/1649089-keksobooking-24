@@ -1,4 +1,11 @@
+const MIN_NAME = 30;
+const MAX_NAME = 100;
+
 const form = document.querySelector('.ad-form');
+const formTitle = form.querySelector('#title');
+const formPrice = form.querySelector('#price');
+const roomNumber = form.querySelector('#room_number');
+const formCapacity = form.querySelector('#capacity');
 const mapFilters = document.querySelector('.map__filters');
 const mapFeatures = form.children;
 const interactiveMapFilters = mapFilters.children;
@@ -25,3 +32,67 @@ const activePage =()=>{
 };
 activePage();
 export {deactivatePage, activePage};
+
+//Проверка на заполненость обязательных полей
+formTitle.addEventListener('invalid',()=>{
+  if (formTitle.validity.valueMissing){
+    formTitle.setCustomValidity('Поле является обязательным для заполнения');
+  }
+});
+
+//Проверка на кол-во символов в заголовке
+formTitle.addEventListener('input',() =>{
+  const lengthValue = formTitle.value.lenght;
+  if(lengthValue < MIN_NAME){
+    formTitle.setCustomValidity(`Минимальное количетсво символов ${MIN_NAME}`);
+  } else if(lengthValue > MAX_NAME){
+    formTitle.setCustomValidity(`Максимальное количество символов ${MAX_NAME}`);
+  } else {
+    formTitle.setCustomValidity('');
+  }
+  formTitle.reportValidity();
+});
+
+//Проверка заполнения поля с ценой
+formPrice.addEventListener('invalid',() =>{
+  if (formPrice.validity.valueMissing){
+    formPrice.setCustomValidity('Поле является обязательным для заполнения');
+  }
+});
+
+//Проверка цены
+formPrice.addEventListener('input',()=>{
+  if(formPrice.validity.rangeOverflow){
+    formPrice.setCustomValidity('Введена слишком высокая цена');
+  } else {
+    formPrice.setCustomValidity('');
+  }
+  formPrice.reportValidity();
+});
+
+//Сравнения количества комнат и количества гостей
+roomNumber.addEventListener('change',()=>{
+  if(Number(roomNumber.value)===100 && Number(formCapacity.value)!==0){
+    roomNumber.setCustomValidity('Не для гостей, укажите количество мест');
+  }else if(Number(roomNumber.value) < Number(formCapacity.value)){
+    roomNumber.setCustomValidity('Мало комнат! Измените количество мест!');
+  }else if(Number(formCapacity.value)===0 && Number(roomNumber.value)=== 100){
+    formCapacity.setCustomValidity('Необходимо увеличить вместимость');
+  }else{
+    roomNumber.setCustomValidity('');
+  }
+  roomNumber.reportValidity('');
+});
+
+formCapacity.addEventListener('change',() =>{
+  if(Number(formCapacity.value)===0 && Number(roomNumber.value)!==100){
+    formCapacity.setCustomValidity('только 100 комнат');
+  }else if(Number(roomNumber.value)< Number(formCapacity.value)){
+    formCapacity.setCustomValidity('Измените количество комнат');
+  }else if(Number(formCapacity.value)===0 && Number(roomNumber.value)===100){
+    roomNumber.setCustomValidity('');
+  }else {
+    formCapacity.setCustomValidity('');
+  }
+  formCapacity.reportValidity();
+});
