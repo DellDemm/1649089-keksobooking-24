@@ -1,5 +1,12 @@
 const MIN_NAME = 30;
 const MAX_NAME = 100;
+const HOUSES_PRICE = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
 
 const form = document.querySelector('.ad-form');
 const formTitle = form.querySelector('#title');
@@ -10,6 +17,9 @@ const mapFilters = document.querySelector('.map__filters');
 const mapFeatures = form.children;
 const interactiveMapFilters = mapFilters.children;
 const disableForm = 'ad-form--disabled';
+const formType = form.querySelector('#type');
+const formTimeIn = form.querySelector('#timein');
+const formTimeOut = form.querySelector('#timeout');
 
 //Дективайия фильтров и формы
 
@@ -64,6 +74,8 @@ formPrice.addEventListener('invalid',() =>{
 formPrice.addEventListener('input',()=>{
   if(formPrice.validity.rangeOverflow){
     formPrice.setCustomValidity('Введена слишком высокая цена');
+  }else if(formPrice.value < HOUSES_PRICE[formType.value]){
+    formPrice.setCustomValidity(`Для этого типа жилья минимальная стоимость ${HOUSES_PRICE[formType.value]}`);
   } else {
     formPrice.setCustomValidity('');
   }
@@ -95,4 +107,28 @@ formCapacity.addEventListener('change',() =>{
     formCapacity.setCustomValidity('');
   }
   formCapacity.reportValidity();
+});
+
+//Функция сравнения типа жилья и цены
+
+formType.addEventListener('change', () => {
+  formPrice.setAttribute('min',HOUSES_PRICE[formType.value]);
+  formPrice.setAttribute('placeholder', HOUSES_PRICE[formType.value]);
+
+  if(formPrice.value< HOUSES_PRICE[formType.value]){
+    formPrice.setCustomValidity(`Минимальная цена: ${HOUSES_PRICE[formType.value]}`);
+  } else {
+    formPrice.setCustomValidity('Корректная цена');
+  }
+  formPrice.reportValidity();
+});
+
+// Сравнение времени въезда и выезда
+
+formTimeIn.addEventListener('change', () => {
+  if(formTimeIn.value !== formTimeOut.value){
+    formTimeIn.value = formTimeOut.value;
+  } else {
+    formTimeOut.value = formTimeIn.value;
+  }
 });
