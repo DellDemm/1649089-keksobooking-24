@@ -18,8 +18,9 @@ const mapFeatures = form.children;
 const interactiveMapFilters = mapFilters.children;
 const disableForm = 'ad-form--disabled';
 const formType = form.querySelector('#type');
-const formTimeIn = form.querySelector('#timein');
-const formTimeOut = form.querySelector('#timeout');
+const checkInInputElement = form.querySelector('select[name="timein"]');
+const checkOutInputElement = form.querySelector('select[name="timeout"]');
+
 
 //Дективайия фильтров и формы
 
@@ -124,11 +125,6 @@ formType.addEventListener('change', () => {
 });
 
 // Сравнение времени въезда и выезда
+checkInInputElement.addEventListener('change', () => { checkOutInputElement.selectedIndex = checkInInputElement.selectedIndex;});
+checkOutInputElement.addEventListener('change', () => { checkInInputElement.selectedIndex = checkOutInputElement.selectedIndex;});
 
-formTimeIn.addEventListener('change', () => {
-  if(formTimeIn.value !== formTimeOut.value){
-    formTimeIn.value = formTimeOut.value;
-  } else {
-    formTimeOut.value = formTimeIn.value;
-  }
-});
