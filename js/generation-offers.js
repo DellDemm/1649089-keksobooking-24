@@ -1,8 +1,6 @@
 import { createOffer} from './data.js';
 createOffer();
-const mapCanvas = document.querySelector('#map-canvas');
 const addCardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const addFragment = document.createDocumentFragment();
 const TYPE = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -11,7 +9,7 @@ const TYPE = {
   hotel: 'Отель',
 };
 const simularOffer = createOffer();
-[simularOffer].forEach((item) => {
+const createPopup = (item) => {
   const addElement = addCardTemplate.cloneNode(true);
 
   item.author.avatar
@@ -75,6 +73,6 @@ const simularOffer = createOffer();
   } else {
     popupPhoto.src = item.offer.photos;
   }
-  addFragment.appendChild(addElement);
-});
-mapCanvas.appendChild(addFragment);
+  return addElement;
+};
+export {createPopup, simularOffer};
