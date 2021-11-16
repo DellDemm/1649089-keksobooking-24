@@ -42,7 +42,6 @@ const activePage =()=>{
   });
 };
 activePage();
-export {deactivatePage, activePage};
 
 //Проверка на заполненость обязательных полей
 formTitle.addEventListener('invalid',()=>{
@@ -128,3 +127,4 @@ formType.addEventListener('change', () => {
 checkInInputElement.addEventListener('change', () => { checkOutInputElement.selectedIndex = checkInInputElement.selectedIndex;});
 checkOutInputElement.addEventListener('change', () => { checkInInputElement.selectedIndex = checkOutInputElement.selectedIndex;});
 
+export {deactivatePage, activePage, formPrice};

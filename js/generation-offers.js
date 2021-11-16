@@ -1,5 +1,4 @@
-import { createOffer} from './data.js';
-createOffer();
+
 const addCardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const TYPE = {
   flat: 'Квартира',
@@ -8,7 +7,7 @@ const TYPE = {
   palace: 'Дворец',
   hotel: 'Отель',
 };
-const simularOffer = createOffer();
+
 const createPopup = (item) => {
   const addElement = addCardTemplate.cloneNode(true);
 
@@ -75,4 +74,4 @@ const createPopup = (item) => {
   }
   return addElement;
 };
-export {createPopup, simularOffer};
+export {createPopup};
