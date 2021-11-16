@@ -1,4 +1,4 @@
-import {simularOffer, createPopup} from './generation-offers.js';
+import {createPopup} from './generation-offers.js';
 import { deactivatePage, activePage } from './form.js';
 
 const TOKYO_LAT = 35.68000;
@@ -44,36 +44,48 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.addTo(mapCanvas);
 
+address.value = `${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)}`;
+
 mainPinMarker.on('moveend', (evt) => {
   address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-[simularOffer].forEach((element) =>{
+const renderMarkers = (offers) =>{
+  offers.forEach((element) => {
+    const pin = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
 
-  const pin = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+
+    const marker = L.marker(
+      {
+        lat: element.location.lat,
+        lng: element.location.lng,
+      },
+      {
+        icon:pin,
+      },
+    );
+
+    marker
+      .addTo(mapCanvas)
+      .bindPopup(createPopup(element));
   });
+};
 
-  const marker = L.marker(
-    {
-      lat: element.location.lat,
-      lng: element.location.lng,
-    },
-    {
-      icon:pin,
-    },
-  );
-
-  marker
-    .addTo(mapCanvas)
-    .bindPopup(createPopup(element));
-});
-
-resetForm.addEventListener('click', () => {
+const resetMarker = () => {
   mainPinMarker.setLatLng({
     lat: TOKYO_LAT,
     lng: TOKYO_LNG,
   });
+  address.value = `${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)}`;
+};
+
+resetForm.addEventListener('click', () => {
+  resetMarker();
+  address.value = '4';
 });
+
+export{renderMarkers,resetMarker};

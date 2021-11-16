@@ -1,4 +1,4 @@
-import {getRandom, getRandomIntFromToWithComma } from './utils.js';
+/*import {getRandom, getRandomIntFromToWithComma } from './utils.js';
 
 // Добавляю массивы с данными
 const ID ={min:1, max:10};
@@ -105,4 +105,4 @@ function createOffer() {
 }
 
 const adoffer = Array.from({ length: 10 }, createOffer);
-export{ID, TITLES, PRICE, TYPES, ROOMS, GUESTS, TIMES, FEATURES, DESCRIPTIONS, PHOTOS, LOCATION, addFeatures, addPhotos, createOffer, adoffer};
+export{ID, TITLES, PRICE, TYPES, ROOMS, GUESTS, TIMES, FEATURES, DESCRIPTIONS, PHOTOS, LOCATION, addFeatures, addPhotos, createOffer, adoffer};*/
