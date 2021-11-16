@@ -50,8 +50,8 @@ mainPinMarker.on('moveend', (evt) => {
   address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-const renderMarkers = (offers) =>{
-  offers.forEach((element) => {
+const renderMarkers = (offer) =>{
+  offer.forEach((element) => {
     const pin = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
