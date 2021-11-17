@@ -21,7 +21,7 @@ const createPopup = (item) => {
     : addElement.querySelector('.popup__text--addres').classList.add('visually-hidden');
   item.offer.price
     ? addElement.querySelector('.popup__text--price').textContent = `${item.offer.price} ₽/ночь`
-    : addElement.querySelector('popup__text--price').classList.add('visually-hidden');
+    : addElement.querySelector('.popup__text--price').classList.add('visually-hidden');
   item.offer.type
     ? addElement.querySelector('.popup__type').textContent = TYPE[item.offer.type]
     : addElement.querySelector('.popup__type').classList.add('visually-hidden');
