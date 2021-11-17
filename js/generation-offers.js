@@ -10,7 +10,6 @@ const TYPE = {
 
 const createPopup = (item) => {
   const addElement = addCardTemplate.cloneNode(true);
-
   item.author.avatar
     ? addElement.querySelector('.popup__avatar').src = item.author.avatar
     : addElement.querySelector('.popup__avatar').classList.add('visually-hidden');

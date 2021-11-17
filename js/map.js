@@ -1,10 +1,35 @@
 import {createPopup} from './generation-offers.js';
-import { deactivatePage, activePage } from './form.js';
+import { deactivatePage, activePage } from './page.js';
+import { resetForm } from './form.js';
+import { getData } from './server.js';
+import {debounce} from './utils/debounce.js';
 
+const DEFAULT_VALUE = 'any';
+const DEFAULT_DEBOUNCE = 5000;
 const TOKYO_LAT = 35.68000;
 const TOKYO_LNG = 139.75000;
 
-const resetForm = document.querySelector('.ad-form__reset');
+const elementForm = document.querySelector('.map__filters');
+const typeElementFilter = elementForm.querySelector('select[name="housing-type"]');
+const priceElementFilter = elementForm.querySelector('select[name="housing-price"]');
+const roomsNumberElementFilter = elementForm.querySelector('select[name="housing-rooms"]');
+const guestNumberElementFilter = elementForm.querySelector('select[name="housing-guests"]');
+const featuresElementListFilter = elementForm.querySelectorAll('input[name="features"]');
+
+const PRICE_RANGE_FILTER = {
+  low:{
+    from:0,
+    to:10000,
+  },
+  middle:{
+    from:10000,
+    to:50000,
+  },
+  high:{
+    from:50000,
+  },
+};
+const resetButton = document.querySelector('.ad-form__reset');
 const address = document.querySelector('#address');
 
 deactivatePage();
@@ -50,6 +75,10 @@ mainPinMarker.on('moveend', (evt) => {
   address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
+const mapData ={
+  markers:[],
+};
+
 const renderMarkers = (offer) =>{
   offer.forEach((element) => {
     const pin = L.icon({
@@ -72,7 +101,13 @@ const renderMarkers = (offer) =>{
     marker
       .addTo(mapCanvas)
       .bindPopup(createPopup(element));
+    mapData.markers.push(marker);
   });
+};
+
+const removeMarkers = () =>{
+  mapData.markers.forEach((marker)=>marker.remove());
+  mapData.markers = [];
 };
 
 const resetMarker = () => {
@@ -83,9 +118,90 @@ const resetMarker = () => {
   address.value = `${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)}`;
 };
 
-resetForm.addEventListener('click', () => {
+resetButton.addEventListener('click', () => {
   resetMarker();
   address.value = '4';
+  resetForm();
 });
 
-export{renderMarkers,resetMarker};
+typeElementFilter.addEventListener('change', debounce(getData, DEFAULT_DEBOUNCE));
+priceElementFilter.addEventListener('change', debounce(getData, DEFAULT_DEBOUNCE));
+roomsNumberElementFilter.addEventListener('change', debounce(getData, DEFAULT_DEBOUNCE));
+guestNumberElementFilter.addEventListener('change', debounce(getData, DEFAULT_DEBOUNCE));
+
+featuresElementListFilter.forEach((element)=>
+  element.addEventListener('click',debounce(getData, DEFAULT_DEBOUNCE)),
+);
+
+function typeFilter (offers) {
+  if (typeElementFilter.value !== DEFAULT_VALUE){
+    offers = offers.filter((offer)=> offer.offer.type === typeElementFilter.value);
+  }
+  return offers;
+}
+
+const roomNumberFilter = (offers) =>{
+  if (roomsNumberElementFilter.value !== DEFAULT_VALUE){
+    const roomsNumber = Number(roomsNumberElementFilter.value);
+    offers = offers.filter((offer)=>{
+      if(!offer.offer.rooms){
+        return false;
+      }
+      return Number(offer.offer.rooms) === roomsNumber;
+    });
+  }
+  return offers;
+};
+
+const guestNumberFilter = (offers) =>{
+  if (guestNumberElementFilter.value !== DEFAULT_VALUE){
+    const questsNumber = Number(guestNumberElementFilter.value);
+    offers = offers.offers.filter((offer) =>{
+      if (typeof offer.offer.quests === 'undefined'){
+        return false;
+      }
+      return Number(offer.offer.quests) === questsNumber;
+    });
+  }
+  return offers;
+};
+
+const priceFilter = (offers) =>{
+  const priceCurrent = PRICE_RANGE_FILTER[priceElementFilter.value];
+  if (priceElementFilter.value !== DEFAULT_VALUE && priceCurrent){
+    offers = offers.filter((offer)=>{
+      if(!offer.offer.price){
+        return false;
+      }
+
+      const priceValue = Number(offer.offer.price);
+      if(priceValue >= priceCurrent.from){
+        if(priceCurrent.to){
+          if (priceValue < priceCurrent.to){
+            return true;
+          }
+        }else{
+          return true;
+        }
+      }
+      return false;
+    });
+  }
+  return offers;
+};
+
+const featuresFilter = (offers) =>{
+  let filteredCards = offers;
+  featuresElementListFilter.forEach((featuresElementFilter)=>{
+    if (featuresElementFilter.checked) {
+      filteredCards = filteredCards.filter((offer)=>{
+        if(!offer.offer.features){
+          return false;
+        }
+        return offer.offer.features.includes(featuresElementFilter.value);
+      });
+    }
+  });
+  return filteredCards;
+};
+export{renderMarkers, resetMarker, typeFilter, roomNumberFilter, guestNumberFilter, priceFilter, featuresFilter, removeMarkers};

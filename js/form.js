@@ -1,3 +1,4 @@
+import { resetMarker } from './map.js';
 const MIN_NAME = 30;
 const MAX_NAME = 100;
 const HOUSES_PRICE = {
@@ -13,35 +14,9 @@ const formTitle = form.querySelector('#title');
 const formPrice = form.querySelector('#price');
 const roomNumber = form.querySelector('#room_number');
 const formCapacity = form.querySelector('#capacity');
-const mapFilters = document.querySelector('.map__filters');
-const mapFeatures = form.children;
-const interactiveMapFilters = mapFilters.children;
-const disableForm = 'ad-form--disabled';
 const formType = form.querySelector('#type');
 const checkInInputElement = form.querySelector('select[name="timein"]');
 const checkOutInputElement = form.querySelector('select[name="timeout"]');
-
-
-//Дективайия фильтров и формы
-
-const deactivatePage = () =>{
-  form.classList.add(disableForm);
-  mapFilters.classList.add(disableForm);
-  [...mapFeatures,...interactiveMapFilters].forEach((element)=>{
-    element.setAttribute('disabled','disabled');
-  });
-};
-deactivatePage();
-
-//Активация страницы
-const activePage =()=>{
-  form.classList.remove(disableForm);
-  mapFilters.classList.remove(disableForm);
-  [...mapFeatures, ...interactiveMapFilters].forEach((element) =>{
-    element.removeAttribute('disabled');
-  });
-};
-activePage();
 
 //Проверка на заполненость обязательных полей
 formTitle.addEventListener('invalid',()=>{
@@ -127,4 +102,13 @@ formType.addEventListener('change', () => {
 checkInInputElement.addEventListener('change', () => { checkOutInputElement.selectedIndex = checkInInputElement.selectedIndex;});
 checkOutInputElement.addEventListener('change', () => { checkInInputElement.selectedIndex = checkOutInputElement.selectedIndex;});
 
-export {deactivatePage, activePage, formPrice};
+const clearForm = () =>{
+  form.reset();
+};
+
+const resetForm = () =>{
+  clearForm();
+  resetMarker();
+};
+
+export {formPrice,clearForm,resetForm};
