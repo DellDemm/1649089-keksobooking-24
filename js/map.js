@@ -156,7 +156,7 @@ const roomNumberFilter = (offers) =>{
 const guestNumberFilter = (offers) =>{
   if (guestNumberElementFilter.value !== DEFAULT_VALUE){
     const questsNumber = Number(guestNumberElementFilter.value);
-    offers = offers.offers.filter((offer) =>{
+    offers = offers.offer.filter((offer) =>{
       if (typeof offer.offer.quests === 'undefined'){
         return false;
       }
